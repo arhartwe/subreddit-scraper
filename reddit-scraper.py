@@ -8,22 +8,30 @@ reddit = praw.Reddit(client_id = 'ClLrpX58ASawAQ',
                      password='staysafebot',
                      user_agent='overusedBot')
 
-overused = {'Have an upvote.',
-            'Edit: Thanks for the gold kind stranger!',
-            'Nice.',
-            'nice.',
-            'Happy Cake Day',
-            'Doggo',
-            'Pupper',
-            'Good Boye',
-            'Fren',
-            'Heckin',
-            'Came gere to say this',
-            'this',
-            'This.',
-            'This',
-            ''
-            }
+
+# The overused phrases
+# We will use original.body and comment.body to check against these.
+# overused = {'Have an upvote.':  0,
+#             'Edit: Thanks for the gold kind stranger!' : 0,
+#             'Nice.' : 0,
+#             'nice.' : 0,
+#             'Happy Cake Day' : 0,
+#             'Doggo' : 0,
+#             'Pupper' : 0,
+#             'Good Boye' : 0,
+#             'Fren' : 0,
+#             'Heckin' : 0,
+#             'Came here to say this' : 0,
+#             'this' : 0,
+#             'This.' : 0,
+#             'This' : 0,
+#             }
+
+testdata =  {
+    "to" : 0,
+}
+
+matches = []
 # Choose which subreddit we will scrape
 subreddit = reddit.subreddit('funny')
 
@@ -41,8 +49,16 @@ for comment in subreddit.stream.comments():
         print(10 * ' ' + 'Reply:')
         comment_original = re.sub("(.{64})", "\\1\n" + 10*" ", str(comment.body), 0, re.DOTALL)
         print(10 * ' ' + comment_original + '\n' + 64*'=')
+
+       
+        for sen in testdata:
+            num = len(re.findall(sen, str(comment.body)))
+            testdata[sen] += num
+
+        print(testdata)
     except praw.exceptions.PRAWException as e:
         pass
+
 
 
 
